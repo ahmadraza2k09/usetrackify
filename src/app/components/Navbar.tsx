@@ -15,6 +15,10 @@ export function Navbar() {
 
   const links = ["Features", "Analytics", "AI Insights", "Team", "Contact"];
 
+  const scrollToFeatures = () => {
+    document.getElementById("features")?.scrollIntoView({ behavior: "smooth" });
+  };
+
   return (
     <nav
       className="fixed top-0 left-0 right-0 z-50 transition-all duration-500"
@@ -47,7 +51,7 @@ export function Navbar() {
               key={l}
               href={`#${l.toLowerCase().replace(" ", "-")}`}
               style={{ color: "#666", fontFamily: FONT, fontWeight: 500, fontSize: "0.88rem" }}
-              className="transition-colors duration-200"
+              className="trk-navlink transition-colors duration-200"
               onMouseEnter={(e) => (e.currentTarget.style.color = "#1bc69e")}
               onMouseLeave={(e) => (e.currentTarget.style.color = "#666")}
             >
@@ -58,7 +62,8 @@ export function Navbar() {
 
         <div className="hidden md:flex">
           <button
-            className="px-5 py-2 rounded-full text-sm transition-all duration-200"
+            onClick={scrollToFeatures}
+            className="trk-shine px-5 py-2 rounded-full text-sm transition-all duration-200"
             style={{
               background: "linear-gradient(135deg, #1bc69e, #0f8f70)",
               color: "#fff",
@@ -67,6 +72,7 @@ export function Navbar() {
               fontSize: "0.88rem",
               boxShadow: "0 4px 14px rgba(27,198,158,0.35), 0 1px 3px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.25)",
               border: "none",
+              cursor: "pointer",
             }}
             onMouseEnter={(e) => {
               (e.currentTarget as HTMLElement).style.transform = "translateY(-1px)";
@@ -85,7 +91,7 @@ export function Navbar() {
               (e.currentTarget as HTMLElement).style.boxShadow = "0 7px 20px rgba(27,198,158,0.45), 0 2px 6px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.25)";
             }}
           >
-            Start Tracking
+            <span className="trk-label">Explore Features</span>
           </button>
         </div>
 

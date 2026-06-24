@@ -23,6 +23,10 @@ export function HeroSection() {
     return () => window.removeEventListener("mousemove", handleMove);
   }, [hovered]);
 
+  const scrollToFeatures = () => {
+    document.getElementById("features")?.scrollIntoView({ behavior: "smooth" });
+  };
+
   return (
     <section
       className="relative min-h-screen flex items-center overflow-hidden"
@@ -40,7 +44,7 @@ export function HeroSection() {
 
         {/* ── Left ── */}
         <div className="flex flex-col gap-8">
-          <h1 style={{ fontFamily: FONT, fontWeight: 800, fontSize: "clamp(2.6rem, 5vw, 4.2rem)", lineHeight: 1.1, color: "#111", letterSpacing: "-0.03em" }}>
+          <h1 className="trk-fade-up" style={{ fontFamily: FONT, fontWeight: 800, fontSize: "clamp(2.6rem, 5vw, 4.2rem)", lineHeight: 1.1, color: "#111", letterSpacing: "-0.03em" }}>
             Manage Your Budget with{" "}
             <span style={{ background: "linear-gradient(135deg, #1bc69e, #0a7a5c)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
               Ease
@@ -51,22 +55,24 @@ export function HeroSection() {
             </span>
           </h1>
 
-          <p style={{ color: "#555", fontFamily: FONT, fontWeight: 400, fontSize: "1rem", lineHeight: 1.8, maxWidth: "500px" }}>
+          <p className="trk-fade-up" style={{ color: "#555", fontFamily: FONT, fontWeight: 400, fontSize: "1rem", lineHeight: 1.8, maxWidth: "500px", animationDelay: "0.09s" }}>
             Trackify transforms scattered spending into clear financial decisions.
             Manage budgets, understand spending habits, and receive intelligent
             AI powered insights tailored to your financial goals.
           </p>
 
-          <div className="flex flex-wrap gap-4">
+          <div className="flex flex-wrap gap-4 trk-fade-up" style={{ animationDelay: "0.18s" }}>
             {/* Primary skeuomorphic button */}
             <button
-              className="px-7 py-3.5 rounded-full transition-all duration-150"
+              onClick={scrollToFeatures}
+              className="trk-shine px-7 py-3.5 rounded-full transition-all duration-150"
               style={{
                 background: "linear-gradient(160deg, #22d4a8 0%, #1bc69e 40%, #0f8f70 100%)",
                 color: "#fff",
                 fontFamily: FONT,
                 fontWeight: 600,
                 fontSize: "0.93rem",
+                cursor: "pointer",
                 border: "1px solid rgba(15,143,112,0.4)",
                 boxShadow: [
                   "0 6px 20px rgba(27,198,158,0.38)",
@@ -91,47 +97,7 @@ export function HeroSection() {
                 (e.currentTarget as HTMLElement).style.transform = "translateY(-2px)";
               }}
             >
-              Start Tracking
-            </button>
-
-            {/* Secondary glass button */}
-            <button
-              className="px-7 py-3.5 rounded-full transition-all duration-150"
-              style={{
-                background: "rgba(255,255,255,0.75)",
-                color: "#333",
-                fontFamily: FONT,
-                fontWeight: 500,
-                fontSize: "0.93rem",
-                border: "1.5px solid rgba(27,198,158,0.22)",
-                backdropFilter: "blur(14px)",
-                boxShadow: [
-                  "0 2px 10px rgba(0,0,0,0.06)",
-                  "inset 0 1px 0 rgba(255,255,255,0.95)",
-                  "inset 0 -1px 0 rgba(0,0,0,0.06)",
-                ].join(", "),
-              }}
-              onMouseEnter={(e) => {
-                (e.currentTarget as HTMLElement).style.borderColor = "rgba(27,198,158,0.45)";
-                (e.currentTarget as HTMLElement).style.color = "#1bc69e";
-                (e.currentTarget as HTMLElement).style.transform = "translateY(-1px)";
-                (e.currentTarget as HTMLElement).style.boxShadow = "0 6px 18px rgba(27,198,158,0.1), 0 2px 6px rgba(0,0,0,0.06), inset 0 1px 0 rgba(255,255,255,0.95), inset 0 -1px 0 rgba(0,0,0,0.06)";
-              }}
-              onMouseLeave={(e) => {
-                (e.currentTarget as HTMLElement).style.borderColor = "rgba(27,198,158,0.22)";
-                (e.currentTarget as HTMLElement).style.color = "#333";
-                (e.currentTarget as HTMLElement).style.transform = "translateY(0)";
-                (e.currentTarget as HTMLElement).style.boxShadow = "0 2px 10px rgba(0,0,0,0.06), inset 0 1px 0 rgba(255,255,255,0.95), inset 0 -1px 0 rgba(0,0,0,0.06)";
-              }}
-              onMouseDown={(e) => {
-                (e.currentTarget as HTMLElement).style.transform = "translateY(1px) scale(0.98)";
-                (e.currentTarget as HTMLElement).style.boxShadow = "0 1px 3px rgba(0,0,0,0.08), inset 0 2px 5px rgba(0,0,0,0.06)";
-              }}
-              onMouseUp={(e) => {
-                (e.currentTarget as HTMLElement).style.transform = "translateY(-1px)";
-              }}
-            >
-              Explore Features
+              <span className="trk-label">Explore Features</span>
             </button>
           </div>
         </div>
@@ -206,7 +172,7 @@ export function HeroSection() {
 
           {/* Floating glassmorphic cards */}
           <div
-            className="absolute transition-all duration-300"
+            className="absolute trk-float trk-shine"
             style={{
               right: "-8px",
               top: "85px",
@@ -225,7 +191,7 @@ export function HeroSection() {
           </div>
 
           <div
-            className="absolute transition-all duration-300"
+            className="absolute trk-float-2 trk-shine"
             style={{
               left: "-16px",
               bottom: "130px",
@@ -240,7 +206,7 @@ export function HeroSection() {
           >
             <div style={{ color: "#aaa", fontSize: "0.67rem", fontFamily: FONT, fontWeight: 500, marginBottom: "5px" }}>AI Insight</div>
             <div style={{ color: "#222", fontFamily: FONT, fontWeight: 500, fontSize: "0.83rem", maxWidth: "138px", lineHeight: 1.45 }}>
-              ✨ You're 18% under budget this week
+              You're 18% under budget this week
             </div>
           </div>
         </div>

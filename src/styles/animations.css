@@ -1,0 +1,180 @@
+/* ============================================================
+   Trackify — interactive animations & skeuomorphic helpers
+   (prefixed with `trk-` to avoid clashing with Tailwind/utility classes)
+   ============================================================ */
+
+/* Smooth in-page navigation for anchor / scroll links */
+html {
+  scroll-behavior: smooth;
+}
+
+/* ---------- Keyframes ---------- */
+
+/* Gentle ambient float for the floating glass cards */
+@keyframes trk-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-11px);
+  }
+}
+
+@keyframes trk-float-2 {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(9px);
+  }
+}
+
+/* Entrance reveal */
+@keyframes trk-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(26px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Specular sheen sweep used on buttons / glass cards */
+@keyframes trk-sheen {
+  0% {
+    transform: translateX(-185%) skewX(-18deg);
+  }
+  100% {
+    transform: translateX(240%) skewX(-18deg);
+  }
+}
+
+/* Soft attention pulse-glow ring */
+@keyframes trk-pulse-glow {
+  0%,
+  100% {
+    box-shadow:
+      0 4px 14px rgba(27, 198, 158, 0.35),
+      0 1px 3px rgba(0, 0, 0, 0.1),
+      inset 0 1px 0 rgba(255, 255, 255, 0.25),
+      0 0 0 0 rgba(27, 198, 158, 0.45);
+  }
+  50% {
+    box-shadow:
+      0 4px 14px rgba(27, 198, 158, 0.35),
+      0 1px 3px rgba(0, 0, 0, 0.1),
+      inset 0 1px 0 rgba(255, 255, 255, 0.25),
+      0 0 0 7px rgba(27, 198, 158, 0);
+  }
+}
+
+/* ---------- Utility classes ---------- */
+
+.trk-float {
+  animation: trk-float 6s ease-in-out infinite;
+  will-change: transform;
+}
+
+.trk-float-2 {
+  animation: trk-float-2 7.5s ease-in-out infinite;
+  will-change: transform;
+}
+
+.trk-fade-up {
+  animation: trk-fade-up 0.85s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.trk-pulse-glow {
+  animation: trk-pulse-glow 2.8s ease-in-out infinite;
+}
+
+/* Specular highlight that sweeps across on hover — gives buttons &
+   glass cards a polished, reflective skeuomorphic finish. */
+.trk-shine {
+  position: relative;
+  overflow: hidden;
+}
+.trk-shine::before {
+  content: "";
+  position: absolute;
+  top: -20%;
+  left: 0;
+  height: 140%;
+  width: 45%;
+  background: linear-gradient(
+    100deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.55) 50%,
+    transparent 100%
+  );
+  transform: translateX(-185%) skewX(-18deg);
+  pointer-events: none;
+  z-index: 1;
+}
+.trk-shine:hover::before {
+  animation: trk-sheen 0.9s ease forwards;
+}
+/* keep button/label text above the sweeping highlight */
+.trk-shine > .trk-label {
+  position: relative;
+  z-index: 2;
+}
+
+/* Animated underline that grows from the left for nav links */
+.trk-navlink {
+  position: relative;
+}
+.trk-navlink::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -5px;
+  height: 2px;
+  width: 100%;
+  border-radius: 2px;
+  background: linear-gradient(90deg, #1bc69e, #0f8f70);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.trk-navlink:hover::after {
+  transform: scaleX(1);
+}
+
+/* Scroll-reveal hook (toggled by IntersectionObserver in JS) */
+.trk-reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition:
+    opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.trk-reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ---------- Respect users who prefer reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .trk-float,
+  .trk-float-2,
+  .trk-fade-up,
+  .trk-pulse-glow {
+    animation: none;
+  }
+  .trk-shine:hover::before {
+    animation: none;
+  }
+  .trk-reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}

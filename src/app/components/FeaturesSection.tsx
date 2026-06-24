@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Brain, Calculator, Share2, BarChart3, PieChart, Moon, Wallet, Globe } from "lucide-react";
 
 const FONT = "'Poppins', sans-serif";
@@ -19,7 +19,7 @@ export function FeaturesSection() {
     <section
       id="features"
       className="relative py-32 overflow-hidden"
-      style={{ background: "linear-gradient(180deg, #ffffff 0%, #f4fdf9 100%)" }}
+      style={{ background: "linear-gradient(180deg, #ffffff 0%, #f4fdf9 100%)", scrollMarginTop: "72px" }}
     >
       <div className="absolute pointer-events-none" style={{ width: "900px", height: "500px", borderRadius: "50%", background: "radial-gradient(ellipse, rgba(27,198,158,0.05) 0%, transparent 70%)", left: "50%", top: "0", transform: "translateX(-50%)", filter: "blur(80px)" }} />
 
@@ -47,13 +47,40 @@ export function FeaturesSection() {
   );
 }
 
-function FeatureCard({ feature }: { feature: typeof features[0]; index: number }) {
+function FeatureCard({ feature, index }: { feature: typeof features[0]; index: number }) {
   const { icon: Icon, title, desc } = feature;
   const [active, setActive] = useState(false);
+  const [visible, setVisible] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          setVisible(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.15 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
 
   return (
     <div
-      className="flex flex-col gap-4 p-6 rounded-2xl cursor-default transition-all duration-300"
+      ref={ref}
+      style={{
+        opacity: visible ? 1 : 0,
+        transform: visible ? "translateY(0)" : "translateY(30px)",
+        transition: "opacity 0.6s cubic-bezier(0.22,1,0.36,1), transform 0.6s cubic-bezier(0.22,1,0.36,1)",
+        transitionDelay: `${(index % 4) * 80}ms`,
+      }}
+    >
+    <div
+      className="trk-shine flex flex-col gap-4 p-6 rounded-2xl cursor-default transition-all duration-300"
       style={{
         background: active ? "rgba(255,255,255,0.98)" : "rgba(255,255,255,0.72)",
         backdropFilter: "blur(24px)",
@@ -97,6 +124,7 @@ function FeatureCard({ feature }: { feature: typeof features[0]; index: number }
         <h3 style={{ fontFamily: FONT, fontWeight: 700, fontSize: "0.95rem", color: "#111", marginBottom: "6px" }}>{title}</h3>
         <p style={{ fontFamily: FONT, fontWeight: 400, fontSize: "0.82rem", color: "#666", lineHeight: 1.7 }}>{desc}</p>
       </div>
+    </div>
     </div>
   );
 }
